@@ -137,6 +137,109 @@ INSERT INTO Title
            INNER JOIN Title T
            ON W.WORKER_ID = T.WORKER_REF_ID
 		   AND T.WORKER_TITLE in ('Manager');
+           
+	-- Q-25. Write an SQL query to fetch duplicate records having matching data in some fields of a table.
+    SELECT worker_title, count(*)  from title 
+    group by worker_title having count(*)>1;  
+    
+    -- Q 26. Write an SQL query to show only odd rows from a table.
+    select * from worker where mod(worker_id, 2) !=0;
+    
+    -- Q-27. Write an SQL query to show only even rows from a table.
+     select * from worker where mod(worker_id, 2) =0;
+     
+  -- Q-30. Write an SQL query to show records from one table that another table does not have.
+  SELECT * FROM Worker
+   MINUS;
+   SELECT * FROM Title;
+
+ -- Q-31. Write an SQL query to show the current date and time.
+     SELECT CURDATE();
+     
+-- Q-32. Write an SQL query to show the top n (say 10) records of a table.
+SELECT * FROM worker order by salary desc limit 10; 
+
+-- Q-33. Write an SQL query to determine the nth (say n=5) highest salary from a table.
+     SELECT * FROM worker order by salary desc limit 4,1;    -- 5th highest salary agayi
+     
+   -- Second max salary
+SELECT MAX(salary) from worker 
+where salary not in  (SELECT MAX(salary) from worker) ;
+
+  -- maxi salary 
+SELECT max(salary) from worker;
+
+     -- MAXI SALARY DEPARTMENT WISE 
+     SELECT DEPARTMENT, MAX(salary) from worker group by department;
+     
+     -- Q-39. Write an SQL query to fetch the first 50% of records from a table.
+    SELECT *
+    FROM WORKER
+	WHERE WORKER_ID <= (SELECT count(WORKER_ID)/2 from Worker);
+    
+--  Q-40. Write an SQL query to fetch the departments that have less than five people in them.
+select DEPARTMENT, count(worker_id) as number_count from worker group by DEPARTMENT HAVING count(worker_id) <5;
+
+-- Q-42. Write an SQL query to show the last record from a table.
+Select * from Worker where WORKER_ID = (SELECT max(WORKER_ID) from Worker);
+
+-- Q-43. Write an SQL query to fetch the first row of a table.
+SELECT * FROM worker where worker_id= (SELECT min(worker_id) from worker);
+
+-- Q 44 Q-44. Write an SQL query to fetch the last five records from a table.
+ (SELECT * from worker order by worker_id desc  limit 5) order by worker_Id;
+ 
+ -- Q-45. Write an SQL query to print the names of employees having the highest salary in each department.
+(SELECT  max(salary) as maxisalry, department from worker group by department );
+
+
+-- imortant queries 
+-- Q-46. Write an SQL query to fetch three max salaries from a table
+-- first method use of limit keyboard
+SELECT distinct salary  FROM worker order by salary desc limit 3; 
+
+ -- second method 
+ SELECT distinct salary from worker w1
+ where 3>= (select count(distinct salary) from worker w2 
+ where w1.salary <= w2.salary )  order by w1.salary desc;
+ 
+ -- Q-47. Write an SQL query to fetch three min salaries from a table.
+ 
+ SELECT distinct salary from worker  w1
+ where 3>= (select count(distinct salary) from worker w2
+ where  w1.salary>=w2.salary ) order by w1.salary desc;
+ 
+ -- Q-48. Write an SQL query to fetch nth max salaries from a table.
+ SELECT distinct salary from worker w1
+ where n >= (select count(distinct salary) from worker w2 
+ where w1.salary <= w2.salary )  order by w1.salary desc;
+ 
+ -- Q-49. Write an SQL query to fetch departments along with the total salaries paid for each of them.
+ SELECT department , sum(salary) from worker group by department order by department desc;
+ 
+ -- Q-50. Write an SQL query to fetch the names of workers who earn the highest salary.
+ SELECT first_name, salary from worker where salary =(select max(salary) from worker);
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+  
+
+
+     
+     
+	
+    
+     
        
 	         
        
